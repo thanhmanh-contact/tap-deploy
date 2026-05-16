@@ -48,7 +48,7 @@ const BRAND = {
     heroTitle: ['Người viết phần mềm,', 'viết tiếp', ' hai thập kỷ.'],
     heroBody: 'Trò chuyện với trợ lý của Khoa Công nghệ Phần mềm — câu chuyện riêng của một khoa đã đào tạo nên hàng nghìn kỹ sư phần mềm Việt Nam.',
     botName: 'Trợ lý Khoa CNPM',
-    botBadge: 'demo · phiên bản kỷ niệm',
+    botBadge: 'phiên bản kỷ niệm',
     placeholder: 'Hỏi tôi về Khoa Công nghệ Phần mềm…',
     timelineTitle: '18 năm của một Khoa',
     version: 'v18.0 · se.uit.edu.vn',
@@ -116,7 +116,7 @@ export default function Home() {
   });
 
   const saveApiKey = (k) => {
-    try { if (k) sessionStorage.setItem(API_KEY_STORAGE, k); } catch {}
+    try { if (k) sessionStorage.setItem(API_KEY_STORAGE, k); } catch { }
     setApiKey(k);
     setShowApiModal(false);
   };
@@ -144,8 +144,10 @@ export default function Home() {
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, gap: 20, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <img src="/uit.jpg" alt="UIT"
-              style={{ width: 46, height: 46, objectFit: 'contain', borderRadius: 8,
-                filter: 'drop-shadow(0 2px 6px rgba(79,140,255,0.4))' }}/>
+              style={{
+                width: 46, height: 46, objectFit: 'contain', borderRadius: 8,
+                filter: 'drop-shadow(0 2px 6px rgba(79,140,255,0.4))'
+              }} />
             <div>
               <div style={{ fontFamily: "'Fraunces', serif", fontSize: 17, color: pal.ink, lineHeight: 1.1, letterSpacing: '-0.01em', fontWeight: 500 }}>
                 {brand.schoolName}
@@ -166,8 +168,8 @@ export default function Home() {
             <div style={{ fontSize: 10, color: pal.mute, padding: '0 8px 0 10px', letterSpacing: '0.18em', fontWeight: 700, textTransform: 'uppercase' }}>
               Chế độ
             </div>
-            <ModePill pal={pal} active={mode === 'uit'}  sub="U"  label="Toàn Trường" onClick={() => switchMode('uit')} />
-            <ModePill pal={pal} active={mode === 'cnpm'} sub="SE" label="Khoa CNPM"   onClick={() => switchMode('cnpm')} />
+            <ModePill pal={pal} active={mode === 'uit'} sub="U" label="Toàn Trường" onClick={() => switchMode('uit')} />
+            <ModePill pal={pal} active={mode === 'cnpm'} sub="SE" label="Khoa CNPM" onClick={() => switchMode('cnpm')} />
           </div>
         </header>
 
@@ -182,10 +184,11 @@ export default function Home() {
           boxShadow: pal.isDark ? 'none' : '0 20px 60px -30px rgba(29,78,216,0.25)',
           position: 'relative', overflow: 'hidden',
         }}>
-          <div style={{ position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%',
+          <div style={{
+            position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%',
             background: `radial-gradient(circle, ${pal.warm}${pal.isDark ? '22' : '12'}, transparent 60%)`,
             pointerEvents: 'none',
-          }}/>
+          }} />
           <div style={{ position: 'relative' }}>
             <div style={{ fontSize: 11, color: pal.warm, letterSpacing: '0.28em', fontWeight: 700 }}>{brand.eyebrow}</div>
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 40, lineHeight: 1.05, margin: '10px 0 8px', letterSpacing: '-0.02em', fontWeight: 500, color: pal.ink, maxWidth: 620 }}>
@@ -198,9 +201,10 @@ export default function Home() {
             </p>
           </div>
           <img src="/uit.jpg" alt="UIT 20 năm"
-            style={{ width: 150, height: 150, objectFit: 'contain', borderRadius: 16, flexShrink: 0,
+            style={{
+              width: 150, height: 150, objectFit: 'contain', borderRadius: 16, flexShrink: 0,
               filter: 'drop-shadow(0 12px 30px rgba(79,140,255,0.45)) drop-shadow(0 4px 12px rgba(255,122,61,0.25))',
-            }}/>
+            }} />
         </section>
 
         {/* ── Main grid ── */}

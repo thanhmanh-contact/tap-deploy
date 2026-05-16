@@ -33,7 +33,7 @@ export default function ApiKeyModal({ pal, open, onSave, savedKey = '' }) {
     {
       n: '02',
       title: 'Bấm "Create API key"',
-      body: 'Trong trang vừa mở, bấm nút "Create API key" và chọn một project Google Cloud (hoặc để mặc định nếu bạn chưa có). Google sẽ tạo ra một chuỗi dài bắt đầu bằng "AIza…".',
+      body: 'Trong trang vừa mở, bấm nút "Create API key" và chọn một project Google Cloud (hoặc để mặc định nếu bạn chưa có). Google sẽ tạo ra một chuỗi dài và thường bắt đầu bằng "AIza…".',
     },
     {
       n: '03',
@@ -43,11 +43,11 @@ export default function ApiKeyModal({ pal, open, onSave, savedKey = '' }) {
     {
       n: '04',
       title: 'Dán vào ô bên dưới',
-      body: 'Dán API key của bạn vào ô bên dưới và bấm "Lưu & Bắt đầu". Bạn có thể thay đổi key này bất cứ lúc nào trong Tweaks.',
+      body: 'Dán API key của bạn vào ô bên dưới và bấm "Lưu & Bắt đầu".',
     },
   ];
 
-  const submit = () => { if (key.trim()) onSave(key.trim()); };
+  const submit = () => { onSave(key.trim()); };
 
   return (
     <div
@@ -109,7 +109,7 @@ export default function ApiKeyModal({ pal, open, onSave, savedKey = '' }) {
               Thiết lập Google AI API key
             </div>
             <div style={{ fontSize: 13.5, color: pal.mute, marginTop: 6, lineHeight: 1.5, maxWidth: 560 }}>
-              Để người kể chuyện hoạt động bằng AI thật, hãy làm theo 4 bước đơn giản dưới đây để lấy Gemini API key miễn phí của Google.
+              Để có trải nghiệm ổn định hơn và tránh giới hạn dùng chung, bạn nên dùng Gemini API key riêng. Nếu không có, hệ thống sẽ tự động dùng API key mặc định từ server.
             </div>
           </div>
         </div>
@@ -170,12 +170,7 @@ export default function ApiKeyModal({ pal, open, onSave, savedKey = '' }) {
             padding: '4px 4px 4px 16px', borderRadius: 14,
             background: pal.soft, border: `1px solid ${pal.accent}40`,
           }}>
-            <span style={{
-              color: pal.mute, fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 14, fontWeight: 600,
-            }}>
-              AIza
-            </span>
+
             <input
               type={showKey ? 'text' : 'password'}
               value={key}
@@ -224,15 +219,12 @@ export default function ApiKeyModal({ pal, open, onSave, savedKey = '' }) {
         }}>
           <button
             onClick={submit}
-            disabled={!key.trim()}
             style={{
               padding: '12px 28px', borderRadius: 12, border: 'none',
-              background: key.trim()
-                ? `linear-gradient(135deg, ${pal.accent}, ${pal.accent2})`
-                : `${pal.accent}30`,
+              background: `linear-gradient(135deg, ${pal.accent}, ${pal.accent2})`,
               color: '#fff', fontSize: 14, fontWeight: 600,
-              cursor: key.trim() ? 'pointer' : 'not-allowed',
-              boxShadow: key.trim() ? `0 10px 28px -10px ${pal.accent}` : 'none',
+              cursor: 'pointer',
+              boxShadow: `0 10px 28px -10px ${pal.accent}`,
               fontFamily: 'inherit', letterSpacing: '0.01em',
               display: 'flex', alignItems: 'center', gap: 8,
             }}

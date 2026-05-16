@@ -49,13 +49,13 @@ export default function Timeline({ pal, brand, timeline }) {
         <div style={{
           position: 'absolute', left: 11, top: 6, bottom: 6, width: 1,
           background: `linear-gradient(to bottom, transparent, ${pal.accent}80, ${pal.gold}, ${pal.accent}80, transparent)`,
-        }}/>
+        }} />
         {timeline.map((t) => {
           const active = t.year === focusYear;
           return (
             <div key={t.year} onClick={() => handlePick(t)} style={{
               display: 'grid', gridTemplateColumns: '24px 1fr', gap: 14,
-              padding: '10px 4px 10px 0', cursor: 'pointer', position: 'relative',
+              padding: '10px 4px 10px 0', cursor: 'default', position: 'relative',
               opacity: active ? 1 : (pal.isDark ? 0.72 : 0.85),
               transition: 'opacity .25s',
             }}>
@@ -67,7 +67,7 @@ export default function Timeline({ pal, brand, timeline }) {
                     ? `0 0 0 4px ${pal.gold}25, 0 0 18px ${pal.gold}80`
                     : `0 0 0 3px ${pal.accent}20`,
                   transition: 'all .3s',
-                }}/>
+                }} />
               </div>
               <div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
@@ -81,12 +81,6 @@ export default function Timeline({ pal, brand, timeline }) {
             </div>
           );
         })}
-      </div>
-
-      <div style={{ marginTop: 'auto', padding: '14px 12px 4px', borderTop: `1px dashed ${pal.accent}30`, marginInline: -4 }}>
-        <div style={{ fontSize: 11, color: pal.mute, lineHeight: 1.5 }}>
-          Bấm vào bất kỳ cột mốc nào để nghe {mode === 'uit' ? 'người kể chuyện' : 'trợ lý Khoa'} mở chương tương ứng.
-        </div>
       </div>
     </aside>
   );
