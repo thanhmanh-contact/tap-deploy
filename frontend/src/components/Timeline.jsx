@@ -31,6 +31,9 @@ export default function Timeline({ pal, brand, timeline }) {
       border: `1px solid ${pal.accent}${pal.isDark ? '30' : '22'}`,
       boxShadow: pal.isDark ? 'none' : '0 20px 60px -30px rgba(29,78,216,0.18)',
       display: 'flex', flexDirection: 'column',
+      position: 'sticky', top: 22,
+      maxHeight: 'calc(100vh - 44px)',
+      overflowY: 'auto',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, padding: '0 8px' }}>
         <div>
