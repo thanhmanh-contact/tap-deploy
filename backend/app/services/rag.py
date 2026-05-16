@@ -131,13 +131,11 @@ def generate_answer(
     #    FIX v2.4: cache cho MỌI query không có history (kể cả first message)
     #    is_first_message được đưa vào cache key → không nhầm lẫn response
     has_history = bool(conversation_history)
-    should_use_cache = not has_history
-
-    if should_use_cache:
-        cached_data = get_cached_answer(query, scope, is_first_message)
-        if cached_data:
-            app_logger.info(f"✅ Cache HIT | scope={scope} | first={is_first_message} | query={query[:40]}")
-            return cached_data
+    # 2. Kiểm tra Cache (Redis hoặc In-process)
+    cached_data = get_cached_answer(query, scope, is_first_message=is_first_message)
+    if cached_data:
+        app_logger.info(f"✅ Cache HIT | scope={scope} | first={is_first_message} | query={query[:40]}")
+        return cached_data
 
     # 3. Embedding & Vector Search (dữ liệu nội bộ)
     #    Embedding được cache in-memory trong embedding.py
