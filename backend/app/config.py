@@ -1,10 +1,6 @@
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-REDIS_PORT: int = 16634
-REDIS_PASSWORD: str = ""
-REDIS_USERNAME: str = "default"
-
 class Settings(BaseSettings):
     # ── Google Gemini API ──────────────────────────────────────────────────────
     GOOGLE_API_KEY: str = ""
@@ -29,8 +25,9 @@ class Settings(BaseSettings):
     RATE_LIMIT_WINDOW_SECONDS: int = 60
 
     # ── Cache / Session ───────────────────────────────────────────────────────
-    REDIS_URL: str = "dependable-plumlike-caption-16353.db.redis.io"
+    REDIS_URL: str = ""
     CACHE_TTL: int = 86400
+    FRONTEND_URL: str = "http://localhost:5173"
 
     # ── Web RAG ───────────────────────────────────────────────────────────────
     WEB_SEARCH_ENABLED: bool = True

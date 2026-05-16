@@ -10,30 +10,12 @@ from app.config import settings
 from app.utils.logger import app_logger
 
 _client = None
-
-# ── In-memory embedding cache ──────────────────────────────────────────────────
-_embedding_cache: dict = {}   # normalized_text → list[float]
+_embedding_cache: dict = {}
 _CACHE_MAX_SIZE = 1000
-_CACHE_EVICT_COUNT = 200       # xoá bao nhiêu entry khi cache đầy
+_CACHE_EVICT_COUNT = 200
 
-
-<<<<<<< HEAD
-def _get_client(api_key: str = ""):
-    key = api_key or settings.GOOGLE_API_KEY
-    if not key:
-        raise RuntimeError("Chưa có API key — người dùng cần nhập key qua giao diện.")
-    from google import genai
-    from google.genai import types as _types
-    return genai.Client(
-        api_key=key,
-        http_options=_types.HttpOptions(api_version="v1beta"),
-    )
-
-
-def get_embedding(text: str, api_key: str = "") -> list:
-=======
 def _get_client():
-    """Khởi tạo Gemini client theo yêu cầu (lazy init)."""
+    """Khởi tạo Gemini client từ settings (lazy init)."""
     global _client
     if _client is not None:
         return _client
@@ -52,7 +34,6 @@ def _get_client():
 
 
 def get_embedding(text: str) -> list:
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
     """
     Tạo vector embedding từ văn bản đầu vào bằng Google Gemini.
     Kết quả được cache in-memory để tránh gọi API lặp lại.
@@ -74,11 +55,7 @@ def get_embedding(text: str) -> list:
         return _embedding_cache[cache_key]
 
     try:
-<<<<<<< HEAD
-        client = _get_client(api_key=api_key)
-=======
         client = _get_client()
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
         response = client.models.embed_content(
             model=settings.EMBEDDING_MODEL,
             contents=text,
@@ -91,7 +68,7 @@ def get_embedding(text: str) -> list:
             keys_to_evict = list(_embedding_cache.keys())[:_CACHE_EVICT_COUNT]
             for k in keys_to_evict:
                 del _embedding_cache[k]
-            app_logger.debug(f"🧹 Embedding cache evicted {_CACHE_EVICT_COUNT} entries")
+            app_logger.debug(f"Embedding cache evicted {_CACHE_EVICT_COUNT} entries")
 
         _embedding_cache[cache_key] = vector
         return vector
@@ -101,3 +78,4 @@ def get_embedding(text: str) -> list:
     except Exception as e:
         app_logger.error(f"❌ Lỗi Embedding API: {e}", exc_info=True)
         raise RuntimeError(f"Không thể tạo embedding: {e}") from e
+

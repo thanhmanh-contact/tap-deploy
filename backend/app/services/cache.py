@@ -1,11 +1,3 @@
-"""
-cache.py — Redis Cache Service
-
-v2.4 FIXES:
-  - Thêm is_first_message vào cache key để phân biệt response có lời chào vs không
-  - Thêm in-process fallback dict khi Redis không khả dụng (giới hạn 500 entry)
-"""
-
 import redis
 import hashlib
 import json
@@ -13,28 +5,20 @@ from app.config import settings
 from app.utils.logger import app_logger
 
 # ── Kết nối Redis ──────────────────────────────────────────────────────────────
+# Trong backend/app/services/cache.py
 try:
-    redis_client = redis.Redis(
-    host=settings.REDIS_URL,
-<<<<<<< HEAD
-    port=settings.REDIS_PORT,
-    decode_responses=True,
-    username=settings.REDIS_USERNAME,
-    password=settings.REDIS_PASSWORD,
-=======
-    port=16634,
-    decode_responses=True,
-    username="default",
-    password="XkuUtNwd67Pjc72jKfui9Kqn6bnERJTa",
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
-    socket_connect_timeout=5,
-    socket_timeout=5
+    # Kết nối Upstash qua URL (Hỗ trợ cả SSL/TLS tự động)
+    redis_client = redis.Redis.from_url(
+        settings.REDIS_URL,
+        decode_responses=True,
+        socket_connect_timeout=5
     )
     redis_client.ping()
-    app_logger.info("✅ Đã kết nối thành công với Redis Cloud!")
+    app_logger.info("✅ Đã kết nối Upstash Redis thành công!")
 except Exception as e:
-    app_logger.error(f"⚠️ Không thể kết nối Redis. Hệ thống sẽ dùng in-process cache. Lỗi: {e}")
+    app_logger.error(f"⚠️ Kết nối Upstash thất bại: {e}")
     redis_client = None
+
 
 # ── Fallback in-process cache khi Redis không có ──────────────────────────────
 _local_cache: dict = {}

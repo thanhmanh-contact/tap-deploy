@@ -10,6 +10,8 @@ from app.config import settings
 from app.utils.logger import app_logger
 from typing import Optional
 
+_client = None
+
 _FALLBACK = {
     "answer": (
         "Dạ, mình đang gặp chút sự cố kết nối với bộ não AI. "
@@ -23,32 +25,23 @@ _FALLBACK = {
 }
 
 
-<<<<<<< HEAD
-def _get_client(api_key: str = ""):
-    key = api_key or settings.GOOGLE_API_KEY
-    if not key:
-        raise RuntimeError("Chưa có API key.")
-    from google import genai
-    from google.genai import types
-    return genai.Client(
-        api_key=key,
-        http_options=types.HttpOptions(api_version="v1beta"),
-    )
-=======
 def _get_client():
-    """Lazy-init Gemini client — tránh crash khi API key chưa có lúc import."""
+    """Khởi tạo Gemini client từ settings (lazy init) và tái sử dụng."""
+    global _client
+    if _client is not None:
+        return _client
+
     if not settings.GOOGLE_API_KEY:
         raise RuntimeError("GOOGLE_API_KEY chưa được cấu hình trong file .env")
 
     from google import genai
-    from google.genai import types
+    from google.genai import types as _types
 
-    client = genai.Client(
+    _client = genai.Client(
         api_key=settings.GOOGLE_API_KEY,
-        http_options=types.HttpOptions(api_version="v1beta"),
+        http_options=_types.HttpOptions(api_version="v1beta"),
     )
-    return client
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
+    return _client
 
 
 def _build_history_block(conversation_history: list) -> str:
@@ -69,10 +62,6 @@ def generate_text(
     is_first_message: bool = True,
     conversation_history: Optional[list] = None,
     used_web: bool = False,
-<<<<<<< HEAD
-    api_key: str = "",
-=======
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
 ) -> dict:
     """
     Sinh câu trả lời từ Gemini LLM với hỗ trợ hội thoại nhiều lượt.
@@ -135,11 +124,7 @@ QUY TẮC CHO SUGGESTIONS:
     prompt = "\n\n".join(prompt_parts)
 
     try:
-<<<<<<< HEAD
-        client = _get_client(api_key=api_key)
-=======
         client = _get_client()
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
         response = client.models.generate_content(
             model=settings.LLM_MODEL,
             contents=prompt,
@@ -166,14 +151,13 @@ QUY TẮC CHO SUGGESTIONS:
         }
 
     except RuntimeError as e:
-        # API key chưa cấu hình
         app_logger.error(f"❌ LLM không khả dụng: {e}")
         return {
             "answer": "Dạ, tính năng AI chưa được cấu hình (thiếu API key). Vui lòng liên hệ quản trị viên. 🙏",
             "suggestions": _FALLBACK["suggestions"],
         }
     except json.JSONDecodeError as e:
-        app_logger.error(f"❌ LLM trả về JSON không hợp lệ: {e}\nRaw: {response.text[:200]}")
+        app_logger.error(f"❌ LLM trả về JSON không hợp lệ: {e}\nRaw: {response.text[:200] if 'response' in locals() else 'None'}")
         return _FALLBACK
     except Exception as e:
         app_logger.error(f"❌ Lỗi LLM: {e}", exc_info=True)

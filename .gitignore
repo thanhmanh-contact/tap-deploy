@@ -1,17 +1,9 @@
 .env
-<<<<<<< HEAD
-*.env
-=======
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
 .claude/
 **/.claude/
 __pycache__/
 **/__pycache__/
 *.pyc
 venv/
-<<<<<<< HEAD
-*.log
 node_modules/
-=======
 *.log
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760

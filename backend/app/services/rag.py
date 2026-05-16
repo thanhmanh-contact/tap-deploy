@@ -114,12 +114,7 @@ def generate_answer(
     query: str,
     current_scope: str = "auto",
     is_first_message: bool = True,
-<<<<<<< HEAD
     conversation_history: Optional[list] = None,
-    api_key: str = "",             # ← thêm param
-=======
-    conversation_history: Optional[list] = None
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
 ) -> dict:
     """
     Sinh câu trả lời RAG hoàn chỉnh (v2.4).
@@ -151,15 +146,11 @@ def generate_answer(
     used_web = False
 
     try:
-<<<<<<< HEAD
-        query_vector = get_embedding(query, api_key=api_key)
-=======
         query_vector = get_embedding(query)
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
         context, sources, found_relevant = search_vector_db(query_vector, scope)
     except Exception as e:
         app_logger.error(f"❌ Lỗi embedding/retrieval: {e}", exc_info=True)
-        found_relevant = False  # ← THÊM
+        found_relevant = False
 
     # 4. FIX v2.4: Quyết định Web RAG TRƯỚC khi gọi LLM
     #    Tiêu chí: context rỗng HOẶC quá ngắn (< _MIN_CONTEXT_CHARS)
@@ -194,10 +185,6 @@ def generate_answer(
         is_first_message=is_first_message,
         conversation_history=conversation_history,
         used_web=used_web,
-<<<<<<< HEAD
-        api_key=api_key,
-=======
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
     )
 
     answer_text = llm_result["answer"]

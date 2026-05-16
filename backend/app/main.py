@@ -1,3 +1,4 @@
+from app.config import settings
 from contextlib import asynccontextmanager
 import os
 from fastapi import FastAPI
@@ -115,7 +116,7 @@ app = FastAPI(
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
-    os.getenv("FRONTEND_URL", ""),   # thêm dòng này
+    settings.FRONTEND_URL,
 ]
 origins = [o for o in origins if o]  # lọc chuỗi rỗng
 
