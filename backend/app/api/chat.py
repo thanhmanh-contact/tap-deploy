@@ -67,7 +67,7 @@ async def chat_with_bot(request: ChatRequest, http_request: Request):
         f"session={str(request.session_id)[:8] if request.session_id else 'none'} | "
         f"msg={request.message[:60]}"
     )
-<<<<<<< HEAD
+
     
     # ── Đọc API key từ header (ưu tiên) hoặc fallback về .env ──
     api_key = http_request.headers.get("X-API-Key", "").strip() or settings.GOOGLE_API_KEY
@@ -76,8 +76,7 @@ async def chat_with_bot(request: ChatRequest, http_request: Request):
             status_code=401,
             detail="Vui lòng cung cấp Google API key để sử dụng chatbot."
         )
-=======
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
+
 
     try:
         # 2. Làm sạch đầu vào
@@ -95,12 +94,8 @@ async def chat_with_bot(request: ChatRequest, http_request: Request):
             query=safe_msg,
             current_scope=request.scope,
             is_first_message=request.is_first_message,
-<<<<<<< HEAD
             conversation_history=history,
             api_key=api_key,          # ← thêm dòng này
-=======
-            conversation_history=history
->>>>>>> 4fae41abd0e1045de723f8af8830902cc4219760
         )
 
         answer_text  = rag_result["answer"]
