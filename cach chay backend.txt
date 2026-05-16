@@ -1,0 +1,59 @@
+=== HƯỚNG DẪN CHẠY UIT CHATBOT v2.2 ===
+
+── YÊU CẦU HỆ THỐNG ──────────────────────────────────────────────────
+  - Python 3.10+
+  - Node.js 18+
+  - Redis (tuỳ chọn — chatbot vẫn chạy được khi thiếu Redis)
+
+── CÀI ĐẶT BACKEND ────────────────────────────────────────────────────
+  cd final_project/backend
+
+  # 1. Tạo môi trường ảo
+  python -m venv venv
+  venv\Scripts\activate        # Windows
+  # source venv/bin/activate   # Linux / macOS
+
+  # 2. Cài thư viện
+  pip install -r requirements.txt
+
+  # 3. Cấu hình API Key
+  Tạo file .env trong thư mục backend/ với nội dung:
+    GOOGLE_API_KEY=<your-google-api-key>
+
+  # 4. Khởi tạo Vector DB (chạy 1 lần sau khi có API key)
+  python scripts/init_data.py
+    → Tự động đọc:  data/raw/uit/data_uit.json  (86 bản ghi)
+    → Tự động đọc:  data/raw/cnpm/data_cnpm.json
+    → Tạo FAISS index trong data/vector_db/
+
+  # 5. Chạy server
+  uvicorn app.main:app --reload --port 8000
+
+── CÀI ĐẶT FRONTEND ───────────────────────────────────────────────────
+  cd final_project/frontend
+  npm install
+  npm run dev
+
+── TRUY CẬP ───────────────────────────────────────────────────────────
+  Frontend : http://localhost:5173
+  API Docs : http://localhost:8000/docs
+  Health   : http://localhost:8000/health
+
+── NÂNG CẤP v2.2 (các thay đổi so với v2.1) ─────────────────────────
+  ✅ BUG FIX: Nguồn tham khảo bị ẩn khi chatbot không có dữ liệu
+  ✅ BUG FIX: Config không crash khi GOOGLE_API_KEY để trống
+  ✅ BUG FIX: Lazy-init Gemini client (không crash lúc import)
+  ✅ BUG FIX: Chuẩn hoá metadata sources (dict / string / None)
+  ✅ WEB RAG: Tự động tìm thông tin trên website UIT khi DB trống
+       Nguồn: uit.edu.vn, tuyensinh.uit.edu.vn, cnpm.uit.edu.vn, ...
+       Cần cài thêm: pip install requests beautifulsoup4 (có trong requirements.txt)
+  ✅ DATA: data_uit.json cập nhật lên 86 bản ghi (từ 48.4KB → 64KB)
+  ✅ UI: Badge phân biệt nguồn WEB vs DB, chỉ hiện khi URL hợp lệ
+  ✅ THRESHOLD: Giảm SIMILARITY_THRESHOLD từ 200 → 150 (chặt hơn)
+
+── GHI CHÚ WEB RAG ────────────────────────────────────────────────────
+  - Tính năng Web RAG dùng DuckDuckGo (không cần API key) để tìm
+    trang UIT phù hợp, sau đó scrape nội dung về.
+  - Chỉ kích hoạt khi Vector DB không có kết quả đủ tốt.
+  - Tắt bằng cách thêm WEB_SEARCH_ENABLED=false vào file .env
+  - Thời gian phản hồi sẽ chậm hơn ~3-8 giây khi dùng Web RAG.
