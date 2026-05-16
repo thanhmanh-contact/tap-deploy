@@ -133,7 +133,6 @@ export default function Home() {
       color: pal.ink,
       fontFamily: "'Be Vietnam Pro', sans-serif",
       position: 'relative',
-      overflow: 'hidden',
       transition: 'background 0.5s, color 0.5s',
     }}>
       <StarField pal={pal} density={220} />
@@ -205,7 +204,7 @@ export default function Home() {
         </section>
 
         {/* ── Main grid ── */}
-        <main style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 20, alignItems: 'stretch' }}>
+        <main style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 20, alignItems: 'start' }}>
           <ChatBox pal={pal} brand={brand} suggested={suggested} apiKey={apiKey} />
           <Timeline pal={pal} brand={brand} timeline={timeline} />
         </main>

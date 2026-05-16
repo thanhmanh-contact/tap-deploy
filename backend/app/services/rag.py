@@ -115,6 +115,7 @@ def generate_answer(
     current_scope: str = "auto",
     is_first_message: bool = True,
     conversation_history: Optional[list] = None,
+    api_key: str = "",
 ) -> dict:
     """
     Sinh câu trả lời RAG hoàn chỉnh (v2.4).
@@ -144,7 +145,7 @@ def generate_answer(
     used_web = False
 
     try:
-        query_vector = get_embedding(query)
+        query_vector = get_embedding(query, api_key=api_key)
         context, sources, found_relevant = search_vector_db(query_vector, scope)
     except Exception as e:
         app_logger.error(f"❌ Lỗi embedding/retrieval: {e}", exc_info=True)
@@ -183,6 +184,7 @@ def generate_answer(
         is_first_message=is_first_message,
         conversation_history=conversation_history,
         used_web=used_web,
+        api_key=api_key,
     )
 
     answer_text = llm_result["answer"]

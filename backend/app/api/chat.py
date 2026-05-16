@@ -95,6 +95,7 @@ async def chat_with_bot(request: ChatRequest, http_request: Request):
             current_scope=request.scope,
             is_first_message=request.is_first_message,
             conversation_history=history,
+            api_key=api_key,
         )
 
         answer_text  = rag_result["answer"]
