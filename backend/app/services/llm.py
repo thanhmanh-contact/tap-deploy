@@ -90,7 +90,7 @@ Quy tắc:
         # Thử với Key được yêu cầu (User hoặc Server)
         target_key = api_key or settings.GOOGLE_API_KEY
         key_type = "User Key" if api_key else "Server Key"
-        app_logger.info(f"🤖 Đang gọi LLM bằng {key_type} (đuôi: ...{target_key[-4:]})")
+        app_logger.info(f"🤖 Đang gọi LLM bằng {key_type} (đuôi: ...{target_key[-15:]})")
         
         data = _call_gemini(api_key)
         return {
